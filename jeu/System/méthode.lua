@@ -12,16 +12,13 @@ function Lancer()
 end
 
 function Afficher_lancer(tableau)
-    local resultat = ""
-    for i = 1, #tableau do
-        resultat = resultat .. tableau[i] -- Ajoute les éléments du tableau à la chaîne resultat
-        if i < #tableau then
-            resultat = resultat .. ","
-        end
+    local chiffre = tableau[#tableau]
+    if chiffre == nil then 
+        chiffre = 1
     end
-    resultat = resultat .. "\n" -- Ajoute un retour à la ligne à la fin
-    return resultat -- Renvoie la chaîne resultat
-end
+    local chemin = "Assets/de"..chiffre..".png"
+    return chemin 
+end 
 
 function table.indexOf(t, value)
     for i = 1, #t do
@@ -29,7 +26,7 @@ function table.indexOf(t, value)
             return i
         end
     end
-    return nil
+    return nil 
 end
 
 
