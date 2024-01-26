@@ -168,7 +168,7 @@ function Combats(joueur, monstre)
         else
             local classe = joueur:getName()
 
-            if classe == "Archer" then
+            if classe == "Archer" or classe == "Custom" then
                 local dmg_joueur = joueur:Competence()
                 Apply_damage(joueur,monstre,dmg_joueur)
 

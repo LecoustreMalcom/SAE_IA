@@ -36,5 +36,9 @@ function Chevalier:Competence()
     return self:getDef() + 2
 end
 
+function Chevalier:getDescComp()
+    return "Augmente la défense de 2"
+end
+
 -- Renvoie la classe Chevalier avec ses méthodes et propriétés
 return Chevalier

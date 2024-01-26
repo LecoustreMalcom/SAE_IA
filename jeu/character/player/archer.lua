@@ -35,5 +35,9 @@ function Archer:Competence()
     return self:getAttack() * 2
 end
 
+function Archer:getDescComp()
+    return "Tire une flèche infligeant 2 fois plus de dégats"
+end
+
 -- Renvoie la classe Archer avec ses méthodes et propriétés
 return Archer

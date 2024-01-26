@@ -17,9 +17,7 @@ local speed_cam = 1000
 local ind_classe = 1
 local compte_j = 0
 local class_choisi = ""
-local class_possible = {"Assassin", "Healer", "Chevalier", "Archer"}
-local stat_classe = {{"Hp = 85", "attack = 10", "defense = 0","luck = 3"},{"Hp = 80", "attack = 5", "defense = 0","luck = 5"},{"Hp = 100", "attack = 8", "defense = 1","luck = 2"},{"Hp = 90", "attack = 8", "defense = 0","luck = 1"}}
-local competence = {"Met un état de saignement ,affligeant 3 dégats supplémentaire à chaque tour","Soigne 50hp","Augmente sa défense de 2 durant 3 tours","Inflige le double de son attaque"}
+local class_possible = {"Assassin", "Healer", "Chevalier", "Archer","Custom"}
 
 local resultat = {}
 
@@ -111,7 +109,7 @@ function love.draw()
         Affi_ecurie(width,liste_j[j_actuel])
 
     elseif gameState == "choose" then
-        Affi_choose(compte_j, class_possible, ind_classe, class_choisi,stat_classe,competence,width)
+        Affi_choose(compte_j, class_possible, ind_classe, class_choisi,width)
 
     elseif gameState == "chargement" then
         Affi_chargement(LoadingTimer, LoadingTime)
@@ -121,7 +119,7 @@ function love.draw()
     end
 end
 
-function love.mousepressed(x, y, button, istouch, presses)
+function love.mousepressed(x, y)
     if gameState == "base" then
         gameState = Menu_base(width, gameState,3)
     
