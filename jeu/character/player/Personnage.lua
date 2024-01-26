@@ -46,10 +46,6 @@ function Personnage:getLuck()
     return self.luck
 end
 
-function Personnage:returnStats()
-    return {"HP = " .. self:getHp(), "Attack = " .. self:getAttack(), "Defense = " .. self:getDef(), "Luck = " .. self:getLuck()} 
-end
-
 function Personnage:getCooldown()
     return self.cooldown
 end
