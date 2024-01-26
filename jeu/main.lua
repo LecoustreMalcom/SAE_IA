@@ -14,6 +14,8 @@ local width = love.graphics.getWidth()
 local zoom = width / 480
 local speed_cam = 1000
 
+
+
 local ind_classe = 1
 local compte_j = 0
 local class_choisi = ""

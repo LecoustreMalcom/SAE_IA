@@ -119,11 +119,13 @@ function Affi_play(cameraX,cameraY,gridSize,plat,resultat,compte_j,width,zoom,li
             end
         end
     end
+    local height = love.graphics.getHeight()
+
 
     love.graphics.setColor(255, 255, 255)
     local de = love.graphics.newImage(Afficher_lancer(resultat))
-    love.graphics.draw(de, 500, 2580, 0 , 0.1 , 0.1 )
-    --love.graphics.printf("Résultat du lancer : " .. Afficher_lancer(resultat), resultatX + cameraX, resultatY + cameraY, love.graphics.getWidth(), 'left')
+    love.graphics.print("Vous avez fait : ", width/7.5 + cameraX - 100, height / 1.025 + cameraY)
+    love.graphics.draw(de, width/6 + cameraX, height / 1.035 + cameraY, 0 , 0.13 , 0.13)        --love.graphics.printf("Résultat du lancer : " .. Afficher_lancer(resultat), resultatX + cameraX, resultatY + cameraY, love.graphics.getWidth(), 'left')
     love.graphics.printf("Vous avez ".. liste_j[j_actuel]:getEcu() .. " écu", resultatX + cameraX - 50, resultatY + cameraY , love.graphics.getWidth(), 'right')
 
     love.graphics.pop()
