@@ -46,6 +46,17 @@ function Personnage:getLuck()
     return self.luck
 end
 
+function Personnage:getCritique()
+    local critiqueChance = ( self:getLuck() * 3 )
+    local randomValue = math.random(100)
+
+    if randomValue <= critiqueChance then
+        return true 
+    else
+        return false
+    end
+end
+
 function Personnage:getCooldown()
     return self.cooldown
 end

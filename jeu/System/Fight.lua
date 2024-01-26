@@ -191,6 +191,12 @@ function Calcul_dmg_j(joueur,monstre)
         dmg_joueur = dmg_joueur + 3
     end
 
+    local critique = joueur:getCritique()
+    if critique == true then
+        dmg_joueur = dmg_joueur * 2
+        love.window.showMessageBox("Critique", "Vous avez infligé un coup critique !", {"OK"})
+    end
+
     local def_mob = monstre:getDef()
     dmg_joueur = dmg_joueur - def_mob
 
