@@ -65,7 +65,6 @@ function love.update(dt)
         end
         J1,J2,J3,J4 = AddJoueur(plat,compte_j,gridSize,playerClasses,width)
         Gob,Gob2,Phoenix,Dragon ,skel1,skel2,Satan,challenge = Add_mob(plat,width,gridSize)
-        Dragon:setHp(1)
         liste_j = Liste_j(J1,J2,J3,J4)
         liste_mob = Liste_mob(Gob,Gob2,Phoenix,Dragon,skel1,skel2,Satan,challenge)
     end
