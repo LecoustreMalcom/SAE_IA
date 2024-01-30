@@ -36,6 +36,12 @@ function Calcul_dmg_m(monstre,joueur)
         dmg_monstre = 0
     end
 
+    local Esquive = joueur:getEsquive()
+    if Esquive == true then
+        dmg_monstre = 0
+        love.window.showMessageBox("Esquive", "Vous avez esquivé l'attaque !", {"OK"})
+    end
+
     return dmg_monstre
 end
 

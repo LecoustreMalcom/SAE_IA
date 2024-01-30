@@ -14,6 +14,7 @@ function Personnage:new()
     self.attack = 0 -- Attaque
     self.defense = 0 -- Défense
     self.luck = 0 -- Chance
+    self.vitesse = 0 --Vitesse
     self.image = nil -- Image du personnage
     self.inventaire = {} -- Inventaire vide
     self.cooldown = 0 --Cooldown de la compétence
@@ -45,6 +46,48 @@ end
 function Personnage:getLuck()
     return self.luck
 end
+
+function Personnage:getCritique()
+    local critiqueChance = ( self:getLuck() * 3 )
+    local randomValue = math.random(100)
+
+    if randomValue <= critiqueChance then
+        return true 
+    else
+        return false
+    end
+end
+
+function Personnage:getCritique()
+    local critiqueChance = ( self:getLuck() * 3 )
+    local randomValue = math.random(100)
+
+    if randomValue <= critiqueChance then
+        return true 
+    else
+        return false
+    end
+end
+
+
+
+function Personnage:getVitesse()
+    return self.vitesse
+end
+
+
+function Personnage:getEsquive()
+    local EsquiveChance = ( self:getVitesse() * 3 )
+    local randomValue = math.random(100)
+
+    if randomValue <= EsquiveChance then 
+        return true 
+    else
+
+        return false
+    end
+end
+
 
 function Personnage:getCooldown()
     return self.cooldown
@@ -113,6 +156,10 @@ end
 
 function Personnage:setLuck(Luck)
     self.luck = Luck
+end
+
+function Personnage:setVitesse(Vitesse)
+    self.vitesse = Vitesse
 end
 
 function Personnage:setCooldown(cooldown)
