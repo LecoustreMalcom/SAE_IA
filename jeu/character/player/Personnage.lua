@@ -246,5 +246,9 @@ function Personnage:afficher()
     love.graphics.draw(self.image, self.quad, self.x, self.y,_,2,2)
 end
 
+function Personnage:returnStats()
+    return {"Hp : "..self:getHp().."/"..self:getMaxHp(),"Attack : "..self:getAttack(),"Defense : "..self:getDef(),"Luck : "..self:getLuck()}
+end
+
 -- Renvoie la classe Personnage avec ses méthodes et propriétés
 return Personnage
