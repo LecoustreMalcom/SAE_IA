@@ -58,6 +58,37 @@ function Personnage:getCritique()
     end
 end
 
+function Personnage:getCritique()
+    local critiqueChance = ( self:getLuck() * 3 )
+    local randomValue = math.random(100)
+
+    if randomValue <= critiqueChance then
+        return true 
+    else
+        return false
+    end
+end
+
+
+
+function Personnage:getVitesse()
+    return self.vitesse
+end
+
+
+function Personnage:getEsquive()
+    local EsquiveChance = ( self:getVitesse() * 3 )
+    local randomValue = math.random(100)
+
+    if randomValue <= EsquiveChance then 
+        return true 
+    else
+
+        return false
+    end
+end
+
+
 function Personnage:getCooldown()
     return self.cooldown
 end
