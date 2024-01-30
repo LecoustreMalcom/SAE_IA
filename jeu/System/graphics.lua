@@ -9,15 +9,20 @@ function Affi_start(numPlayers,width)
     love.graphics.printf("Appuyez sur 'Entrée' pour choisir votre classe", 0, 400, love.graphics.getWidth(), "center")
 end
 
-function Affi_choose(compte_j, class_possible, ind_classe, class_choisi,stat_classe,competence,width)
+function Affi_choose(compte_j, class_possible, ind_classe, class_choisi,width)
+    local classInstance = GetClasseJoueur(class_possible[ind_classe])
     love.graphics.clear(0, 0, 0)
 
     love.graphics.setColor(255, 255, 255)
     love.graphics.draw(Background, 0, 0, 0, width / 1024, width / 1024)
     love.graphics.printf("Quelle classe souhaitez-vous, joueur " .. compte_j + 1 .. " ?", 0, 100, love.graphics.getWidth(), "center")
     love.graphics.printf("Classe : " .. class_possible[ind_classe], 0, 200, love.graphics.getWidth(), "center")
-    love.graphics.printf("Stats de la classe : " .. table.concat(stat_classe[ind_classe],","), 0, 300, love.graphics.getWidth(), "center")
-    love.graphics.printf("Compétences de la classe : " .. competence[ind_classe], 0, 350, love.graphics.getWidth(), "center")
+
+    local stats = classInstance:returnStats()
+    love.graphics.printf("Stats de la classe : " .. table.concat(stats,","), 0, 300, love.graphics.getWidth(), "center")
+    
+    local competence = classInstance:getDescComp()
+    love.graphics.printf("Compétences de la classe : " .. competence, 0, 350, love.graphics.getWidth(), "center")
     love.graphics.printf("Appuyez sur les touches 'left' and 'right' pour changer la classe", 0, 400, love.graphics.getWidth(), "center")
     love.graphics.printf("Appuyez sur 'Entrée' pour confirmer", 0, 500, love.graphics.getWidth(), "center")
 

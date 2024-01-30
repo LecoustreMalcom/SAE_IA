@@ -35,5 +35,9 @@ function Healer:Competence()
     self:soigner(50)
 end
 
+function Healer:getDescComp()
+    return "Soigne 50hp"
+end
+    
 -- Renvoie la classe Healer avec ses méthodes et propriétés
 return Healer

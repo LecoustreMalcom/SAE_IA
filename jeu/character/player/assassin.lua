@@ -36,5 +36,9 @@ function Assassin:Competence()
     return "saignement"
 end
 
+function Assassin:getDescComp()
+    return "Met un état de saignement ,affligeant 3 dégats supplémentaire à chaque tour"
+end
+
 -- Renvoie la classe Assassin avec ses méthodes et propriétés
 return Assassin

@@ -15,7 +15,7 @@ function Menu_start(key,gameState,numPlayers)
 end
 
 function Menu_choose(key,gameState,ind_classe,playerClasses,compte_j,numPlayers,class_possible)
-    if key == "right" and ind_classe < 4 then
+    if key == "right" and ind_classe < #class_possible then
         ind_classe = ind_classe + 1
     elseif key == "left" and ind_classe > 1 then
         ind_classe = ind_classe - 1
