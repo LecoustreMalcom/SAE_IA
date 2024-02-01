@@ -14,7 +14,8 @@ function Healer:new()
     instance:setHp(80) -- Points de vie
     instance:setAttack(5) -- Attaque
     instance:setDef(0) -- Défense
-    instance:setLuck(5) -- ChanceS
+    instance:setLuck(5) -- Chance
+    instance:setVitesse(2) -- Vitesse
     instance:setImage(love.graphics.newImage("character/player/assets/Healer/Idle/Idle-Sheet.png")) -- Image de l'Healer
     instance:setInventory({}) -- Inventaire vide
     instance:setCooldown(0) --Cooldown de la compétence
