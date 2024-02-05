@@ -17,6 +17,7 @@ function Chevalier:new()
     instance:setAttack(8) -- Attaque
     instance:setDef(1) -- Défense
     instance:setLuck(2) -- Chance
+    instance:setVitesse(2) -- Vitesse
     instance:setImage(love.graphics.newImage("character/player/assets/Knight/Idle/Idle-Sheet.png")) -- Image du Chevalier
     instance:setQuad(instance:AssoImage("character/player/assets/Knight/Idle/Idle-Sheet.png")[1])
     instance:setInventory({}) -- Inventaire vide

@@ -15,6 +15,7 @@ function Archer:new()
     instance:setAttack(8) -- Attaque
     instance:setDef(0) -- Défense
     instance:setLuck(6) -- Chance
+    instance:setVitesse(1) --Vitesse
     instance:setImage(love.graphics.newImage("character/player/assets/Archer/Idle/Idle-Sheet.png")) -- Image de l'Archer
     instance:setQuad(nil)
     instance:setInventory({}) -- Inventaire vide

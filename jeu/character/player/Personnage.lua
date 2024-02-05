@@ -58,18 +58,6 @@ function Personnage:getCritique()
     end
 end
 
-function Personnage:getCritique()
-    local critiqueChance = ( self:getLuck() * 3 )
-    local randomValue = math.random(100)
-
-    if randomValue <= critiqueChance then
-        return true 
-    else
-        return false
-    end
-end
-
-
 
 function Personnage:getVitesse()
     return self.vitesse
@@ -294,7 +282,7 @@ function Personnage:afficher()
 end
 
 function Personnage:returnStats()
-    return {"Hp : "..self:getHp().."/"..self:getMaxHp(),"Attack : "..self:getAttack(),"Defense : "..self:getDef(),"Luck : "..self:getLuck()}
+    return {"Hp : "..self:getHp().."/"..self:getMaxHp(),"Attack : "..self:getAttack(),"Defense : "..self:getDef(),"Luck : "..self:getLuck(),"Vitesse : "..self:getVitesse()}
 end
 
 -- Renvoie la classe Personnage avec ses méthodes et propriétés

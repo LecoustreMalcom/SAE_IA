@@ -15,7 +15,7 @@ function Assassin:new()
     instance:setAttack(10) -- Attaque
     instance:setDef(0) -- Défense
     instance:setLuck(5) -- Chance
-    instance:setVitesse(4) --Vitesse
+    instance:setVitesse(5) --Vitesse
     instance:setImage(love.graphics.newImage("character/player/assets/assassin/Sheet_Assassin.png")) -- Image de l'Assassin
     instance:setInventory({}) -- Inventaire vide
     instance:setCooldown(0) --Cooldown de la compétence
