@@ -181,3 +181,28 @@ function love.keypressed(key, scancode, isrepeat)
         end
     end
 end
+
+-------------------------- RESEAUX --------------------------
+
+-- Serveur
+local socket = require("socket")
+
+-- Créer un socket UDP
+local server = socket.udp()
+server:setsockname("*", 12345)  -- Écoute sur toutes les adresses IP sur le port 12345
+server:settimeout(0)  -- Définir le timeout sur 0 pour une réception non bloquante
+
+print("Serveur démarré, en attente de connexion...")
+
+-- Boucle principale du serveur
+while true do
+    local data, clientIP, clientPort = server:receivefrom()
+    if data then
+        print("Message reçu du client :", data)
+        -- Répondre au client (vous pouvez inclure ici le traitement des données reçues)
+        server:sendto("Message reçu avec succès!", clientIP, clientPort)
+    end
+    -- Mettre un petit délai pour ne pas surcharger le CPU
+    socket.sleep(0.01)
+end
+-- Fin du serveur
