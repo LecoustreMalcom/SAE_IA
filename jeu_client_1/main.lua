@@ -184,20 +184,31 @@ end
 
 ------------------------ RESAEUX ------------------------
 
--- Client
-local socket = require("socket")
+-- Importer les classes Assassin et Healer
+local Plateau = require("System.plateau")
+require "System.méthode"
+require "System.Deplacement"
+require "System.Gestion"
+require "System.draw"
+require "System.menu"
+require  "System.graphics"
 
--- Créer un socket UDP
+-- Créer un socket UDP pour le client
+local socket = require("socket")
 local client = socket.udp()
-client:setpeername("127.0.0.1", 12345)  -- Se connecter au serveur sur localhost et le port 12345
+
+-- Se connecter au serveur sur localhost et le port 12345
+client:setpeername("127.0.0.1", 12345)
 
 -- Envoyer un message au serveur
 client:send("Salutations, serveur!")
 
 -- Attendre la réponse du serveur
 local response, err = client:receive()
+
 if response then
     print("Réponse du serveur :", response)
 else
     print("Erreur lors de la réception de la réponse du serveur :", err)
 end
+

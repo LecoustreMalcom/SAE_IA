@@ -1,0 +1,10 @@
+{
+    "CodeGPT.organizationId": "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",
+    "Lua.runtime.version": "LuaJIT",
+    "Lua.runtime.special": {
+        "love.filesystem.load": "loadfile"
+    },
+    "Lua.workspace.library": [
+        "${3rd}/love2d/library"
+    ]
+}
