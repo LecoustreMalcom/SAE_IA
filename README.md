@@ -19,5 +19,6 @@ Pour pouvoir jouer au jeu :
         -Linux :
             -Se déplacer dans le répertoire contenant le fichier.love (cd path/to/the/game)
             - taper la commande love NomDuFichier.love
+
             
 A présent vous pouvez donc jouer au jeu
