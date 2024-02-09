@@ -141,6 +141,7 @@ end
 -- Créez la fonction updateServer pour gérer la logique du serveur
 function updateServer()
     local data, clientIP, clientPort = server:receivefrom()
+    print(data)
     if data then
         if data == "PlayerConnected" then
             waitingPlayers = waitingPlayers + 1
@@ -162,7 +163,6 @@ end
 while true do
     local data, clientIP, clientPort = server:receivefrom()
     if data then
-        print("Message reçu du client :", data)
         if data == "PlayerConnected" then
             print(waitingPlayers)
             waitingPlayers = waitingPlayers + 1
