@@ -14,8 +14,6 @@ local width = love.graphics.getWidth()
 local zoom = width / 480
 local speed_cam = 1000
 
-
-
 local ind_classe = 1
 local compte_j = 0
 local class_choisi = ""
@@ -72,6 +70,9 @@ function love.update(dt)
     if gameState == "play" then
         cameraY = Moove_cam(cameraY,speed_cam,dt)
     end
+
+    -- Appel de la fonction gérant le serveur
+    updateServer()
 end
 
 function love.load()
@@ -182,24 +183,16 @@ function love.keypressed(key, scancode, isrepeat)
     end
 end
 
--------------------------- RESEAUX --------------------------
+------------------------ RESEAUX ------------------------
 
-<<<<<<< Updated upstream
--- Serveur
-=======
 -- Créer un socket UDP pour le serveur
->>>>>>> Stashed changes
 local socket = require("socket")
-
--- Créer un socket UDP
 local server = socket.udp()
 server:setsockname("*", 12345)  -- Écoute sur toutes les adresses IP sur le port 12345
 server:settimeout(0)  -- Définir le timeout sur 0 pour une réception non bloquante
 
 print("Serveur démarré, en attente de connexion...")
 
-<<<<<<< Updated upstream
-=======
 -- Attendre que le client se connecte
 local clientConnected = false
 local clientIP, clientPort
@@ -233,7 +226,6 @@ function updateServer()
     socket.sleep(0.01)
 end
 
->>>>>>> Stashed changes
 -- Boucle principale du serveur
 while true do
     local data, clientIP, clientPort = server:receivefrom()
@@ -244,9 +236,39 @@ while true do
     end
     -- Mettre un petit délai pour ne pas surcharger le CPU
     socket.sleep(0.01)
-end
-<<<<<<< Updated upstream
--- Fin du serveur
-=======
 
->>>>>>> Stashed changes
+    -- Appel de la fonction de mise à jour du serveur
+    updateServer()
+end
+
+local maxPlayers = 2
+local waitingPlayers = 0
+local clients = {}  -- Tableau pour stocker les clients connectés avec leur adresse IP et leur port
+
+-- Afficher l'interface de la salle d'attente
+-- Fonction pour dessiner l'interface de la salle d'attente
+function drawWaitingScreen()
+    love.graphics.clear()  -- Effacer l'écran
+
+    -- Afficher le texte "En attente de joueurs..."
+    love.graphics.print("En attente de joueurs...", 100, 100)
+
+    -- Afficher le nombre de joueurs connectés et le nombre maximum de joueurs
+    love.graphics.print("Joueurs connectés : " .. waitingPlayers, 100, 150)
+    love.graphics.print("Nombre maximum de joueurs : " .. maxPlayers, 100, 200)
+
+    -- Dessiner le bouton pour lancer le jeu si le nombre de joueurs atteint maxPlayers
+    if waitingPlayers == maxPlayers then
+        love.graphics.rectangle("fill", 100, 250, 200, 50)  -- Rectangle du bouton
+        love.graphics.print("Lancer le jeu", 150, 260)  -- Texte du bouton
+    end
+end
+
+-- Fonction pour détecter le clic sur le bouton de lancement du jeu
+function love.mousepressed(x, y, button, istouch, presses)
+    if waitingPlayers == maxPlayers and x >= 100 and x <= 300 and y >= 250 and y <= 300 then
+        -- Lancer le jeu lorsque le bouton est cliqué
+        startGame()
+    end
+end
+
