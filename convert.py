@@ -18,6 +18,6 @@ def select_directory():
     root = tk.Tk()
     root.withdraw()  # Hide the main window
     directory = filedialog.askdirectory()  # Show the dialog to choose directory
-    compress_to_love(directory, 'jeu_client')  # Compress the chosen directory
+    compress_to_love(directory, 'jeu')  # Compress the chosen directory
 
-select_directory()
+select_directory()  

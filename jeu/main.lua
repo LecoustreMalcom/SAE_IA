@@ -5,7 +5,7 @@ require "System.Deplacement"
 require "System.Gestion"
 require "System.draw"
 require "System.menu"
-require  "System.graphics"
+require "System.graphics"
 
 local cameraX = 0
 local cameraY = 840
@@ -31,9 +31,9 @@ plat:ajouterIndispo({{1,16},{2,16},{3,16},{4,16},{5,16},{6,16},{7,16},{8,16},{9,
 plat:ajouterAleatoire()
 plat:ajouterCaseSpeciale()
 
-local numPlayers = 1
+local numPlayers = 2
 local font
-local gameState = "base"
+local gameState = "waiting"  -- GameState pour le waiting screen
 local playerClasses = {}
 
 local J1 = nil
@@ -54,6 +54,18 @@ local challenge
 local Satan
 
 local alance = false
+
+-- Créer un socket UDP pour le serveur
+local socket = require("socket")
+local server = socket.udp()
+server:setsockname("*", 12345)  -- Écoute sur toutes les adresses IP sur le port 12345
+server:settimeout(0)  -- Définir le timeout sur 0 pour une réception non bloquante
+
+print("Serveur démarré, en attente de connexion...")
+
+local maxPlayers = 2
+local waitingPlayers = 0
+local clients = {}  -- Tableau pour stocker les clients connectés avec leur adresse IP et leur port
 
 function love.update(dt)
     if gameState == "chargement" then
@@ -88,128 +100,43 @@ function love.load()
 end
 
 function love.draw()
-    if gameState == "base" then
-        Affi_Base(width)
-
+    if gameState == "waiting" then
+        drawWaitingScreen()
     elseif gameState == "rules" then
         Affi_rules(width)
-
     elseif gameState == "credits" then
         Affi_credits(width)
-
     elseif gameState == "start" then
-        -- Affichez l'interface demandant le nombre de joueurs
         Affi_start(numPlayers,width)
-
     elseif gameState == "shop" then
         Affi_shop(width,liste_j[j_actuel])
-
     elseif gameState == "torture" then
         Affi_torture(width,liste_j[j_actuel])
-
     elseif gameState == "ecurie" then
         Affi_ecurie(width,liste_j[j_actuel])
-
     elseif gameState == "choose" then
         Affi_choose(compte_j, class_possible, ind_classe, class_choisi,width)
-
     elseif gameState == "chargement" then
         Affi_chargement(LoadingTimer, LoadingTime)
-
     elseif gameState == "play" then
         Affi_play(cameraX,cameraY,gridSize,plat,resultat,compte_j,width,zoom,liste_j,j_actuel,liste_mob)
     end
 end
 
-function love.mousepressed(x, y)
-    if gameState == "base" then
-        gameState = Menu_base(width, gameState,3)
-    
-    elseif gameState == "play" then
-        if resultat ~= nil and #resultat > 0 then
-            local joueur = liste_j[j_actuel]
-            gameState = Deplacement(plat,width,x,y,cameraY,cameraX,resultat,joueur,gameState)
-            LancerCombat(plat,joueur,liste_mob)
-            EndGame(joueur,Dragon,liste_j)
-            plat:giveGraal(joueur)
-            access = plat:getAccess(Dragon,joueur,access)
-            resultat = {}
-            j_actuel = j_actuel + 1
-            if j_actuel > compte_j then
-                j_actuel = 1
-            end
-            alance = false
-        end
-    elseif gameState == "shop" then
-        Menu_shop(liste_j[j_actuel],2)        
-    end
+-- Fonction pour dessiner l'interface de la salle d'attente
+function drawWaitingScreen()
+    love.graphics.clear(1, 0, 0)  -- Effacer l'écran avec un fond rouge
+
+    -- Afficher le texte "En attente de joueurs..."
+    love.graphics.print("En attente de joueurs...", 100, 100)
+
+    -- Afficher le nombre de joueurs connectés et le nombre maximum de joueurs
+    love.graphics.print("Joueurs connectés : " .. waitingPlayers, 100, 150)
+    love.graphics.print("Nombre maximum de joueurs : " .. maxPlayers, 100, 200)
+
+    -- Afficher le libellé "Waiting Screen" au-dessus du waiting screen
+    love.graphics.print("Waiting Screen", 100, 50)
 end
-        
-
-function love.keypressed(key, scancode, isrepeat)
-    if key == "escape" then
-        love.event.quit()
-    end
-
-    if gameState == "start" then
-        gameState,numPlayers = Menu_start(key,gameState,numPlayers)
-
-    elseif gameState == "rules" or gameState == "credits" then
-        if key == "backspace" then
-            gameState = "base"
-        end
-
-    elseif gameState == "shop" or gameState == "torture" or gameState == "ecurie" then
-        if key == "backspace" then
-            gameState = "play"
-        end
-
-        if gameState == "torture" then
-            Menu_torture(liste_j[j_actuel],key)
-        end
-
-        if gameState == "ecurie" then
-            Menu_ecurie(liste_j[j_actuel],key)
-        end
-
-    elseif gameState == "choose" then
-        gameState,ind_classe,playerClasses,compte_j,class_choisi = Menu_choose(key,gameState,ind_classe,playerClasses,compte_j,numPlayers,class_possible)
-
-    elseif gameState == "play" then
-        if key == "space" and not alance then 
-            resultat = Lancer()
-            alance = true
-        end
-    end
-end
-
------------------------- RESEAUX ------------------------
-
--- Créer un socket UDP pour le serveur
-local socket = require("socket")
-local server = socket.udp()
-server:setsockname("*", 12345)  -- Écoute sur toutes les adresses IP sur le port 12345
-server:settimeout(0)  -- Définir le timeout sur 0 pour une réception non bloquante
-
-print("Serveur démarré, en attente de connexion...")
-
--- Attendre que le client se connecte
-local clientConnected = false
-local clientIP, clientPort
-
-while not clientConnected do
-    local data, ip, port = server:receivefrom()
-    if data then
-        clientIP = ip
-        clientPort = port
-        clientConnected = true
-        print("Client connecté :", clientIP, clientPort)
-        server:sendto("Connexion établie!", clientIP, clientPort)
-    end
-end
-
--- Maintenant que le client est connecté, le serveur peut envoyer des messages
--- Vous pouvez inclure ici le reste de votre logique de serveur
 
 -- Créez la fonction updateServer pour gérer la logique du serveur
 function updateServer()
@@ -217,6 +144,11 @@ function updateServer()
     if data then
         if data == "PlayerConnected" then
             waitingPlayers = waitingPlayers + 1
+            print("Joueur connecté :", clientIP, clientPort)
+            -- Si le nombre de joueurs requis est atteint, passer au gameState "play"
+            if waitingPlayers == maxPlayers then
+                gameState = "play"
+            end
         end
         print("Message reçu du client :", data)
         -- Répondre au client (vous pouvez inclure ici le traitement des données reçues)
@@ -231,6 +163,16 @@ while true do
     local data, clientIP, clientPort = server:receivefrom()
     if data then
         print("Message reçu du client :", data)
+        if data == "PlayerConnected" then
+            print(waitingPlayers)
+            waitingPlayers = waitingPlayers + 1
+            print("Joueur connecté :", clientIP, clientPort)
+            -- Si le nombre de joueurs requis est atteint, passer au gameState "play"
+            if waitingPlayers == maxPlayers then
+                gameState = "play"
+            end
+        end
+        print("Message reçu du client :", data)
         -- Répondre au client (vous pouvez inclure ici le traitement des données reçues)
         server:sendto("Message reçu avec succès!", clientIP, clientPort)
     end
@@ -240,35 +182,3 @@ while true do
     -- Appel de la fonction de mise à jour du serveur
     updateServer()
 end
-
-local maxPlayers = 2
-local waitingPlayers = 0
-local clients = {}  -- Tableau pour stocker les clients connectés avec leur adresse IP et leur port
-
--- Afficher l'interface de la salle d'attente
--- Fonction pour dessiner l'interface de la salle d'attente
-function drawWaitingScreen()
-    love.graphics.clear()  -- Effacer l'écran
-
-    -- Afficher le texte "En attente de joueurs..."
-    love.graphics.print("En attente de joueurs...", 100, 100)
-
-    -- Afficher le nombre de joueurs connectés et le nombre maximum de joueurs
-    love.graphics.print("Joueurs connectés : " .. waitingPlayers, 100, 150)
-    love.graphics.print("Nombre maximum de joueurs : " .. maxPlayers, 100, 200)
-
-    -- Dessiner le bouton pour lancer le jeu si le nombre de joueurs atteint maxPlayers
-    if waitingPlayers == maxPlayers then
-        love.graphics.rectangle("fill", 100, 250, 200, 50)  -- Rectangle du bouton
-        love.graphics.print("Lancer le jeu", 150, 260)  -- Texte du bouton
-    end
-end
-
--- Fonction pour détecter le clic sur le bouton de lancement du jeu
-function love.mousepressed(x, y, button, istouch, presses)
-    if waitingPlayers == maxPlayers and x >= 100 and x <= 300 and y >= 250 and y <= 300 then
-        -- Lancer le jeu lorsque le bouton est cliqué
-        startGame()
-    end
-end
-
