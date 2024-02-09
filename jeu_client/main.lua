@@ -201,3 +201,5 @@ if response then
 else
     print("Erreur lors de la réception de la réponse du serveur :", err)
 end
+
+
