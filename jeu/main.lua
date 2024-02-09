@@ -7,6 +7,8 @@ require "System.draw"
 require "System.menu"
 require  "System.graphics"
 
+
+
 local cameraX = 0
 local cameraY = 840
 

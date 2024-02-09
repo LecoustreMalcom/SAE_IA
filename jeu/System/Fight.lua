@@ -47,6 +47,9 @@ end
 
 function WinOrLose(joueur,monstre)
     if monstre:getHp() == 0 then
+
+        --METTRE STAT POUR KILL MONSTRE
+
         love.window.showMessageBox("Gain", "Vous avez tué le monstre ", {"OK"})
         return true
 

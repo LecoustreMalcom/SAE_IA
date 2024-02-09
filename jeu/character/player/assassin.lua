@@ -1,5 +1,6 @@
 -- Assassin.lua
 
+
 -- Importe la classe parente Personnage
 local Personnage = require("character.player.Personnage")
 

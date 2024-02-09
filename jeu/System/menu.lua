@@ -2,6 +2,9 @@ local Sword = require("objet.weapon.Sword")
 local Armor = require("objet.armure.amure_en_fer")
 local Potion = require("objet.consumable.potion")
 
+local conn = require "bdd.connexion_bdd"
+
+
 function Menu_start(key,gameState,numPlayers)
     if key == "up" and numPlayers < 4 then
         numPlayers = numPlayers + 1
@@ -14,7 +17,7 @@ function Menu_start(key,gameState,numPlayers)
     
 end
 
-function Menu_choose(key,gameState,ind_classe,playerClasses,compte_j,numPlayers,class_possible)
+function Menu_choose(key, gameState, ind_classe, playerClasses, compte_j, numPlayers, class_possible)
     if key == "right" and ind_classe < #class_possible then
         ind_classe = ind_classe + 1
     elseif key == "left" and ind_classe > 1 then
@@ -24,6 +27,19 @@ function Menu_choose(key,gameState,ind_classe,playerClasses,compte_j,numPlayers,
         playerClasses[compte_j + 1] = selectedClass
         Class_choisi = selectedClass
 
+        -- Insérer la classe choisie dans la table joueur
+        local insertQuery = string.format("INSERT INTO joueur (id_classe) VALUES (%d)", ind_classe)
+        
+        local success, errorMessage = pcall(function()
+            conn:exec(insertQuery)
+        end)
+
+        if success then
+            print("Insertion avec succès")
+        else
+            print("Insertion a échoué:", errorMessage)
+        end
+
         compte_j = compte_j + 1
         if compte_j == numPlayers then
             gameState = "chargement"
@@ -31,7 +47,7 @@ function Menu_choose(key,gameState,ind_classe,playerClasses,compte_j,numPlayers,
             ind_classe = 1
         end
     end
-    return gameState,ind_classe,playerClasses,compte_j,Class_choisi,class_possible
+    return gameState, ind_classe, playerClasses, compte_j, Class_choisi, class_possible
 end
 
 function Menu_base(width, gamestate, scale)
@@ -67,6 +83,11 @@ function Menu_base(width, gamestate, scale)
 end
 
 function Menu_shop(joueur,scale)
+    
+    --METTRE STATS POUR LES ACHATS OBJET DANS LA BOUTIQUE
+
+
+
     local start_button = love.graphics.newImage("Assets/play.png")
     local buttonX, buttonY = 900, 75
     local buttonWidth, buttonHeight = start_button:getDimensions()
