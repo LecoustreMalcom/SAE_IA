@@ -7,14 +7,14 @@ require "System.draw"
 require "System.menu"
 require  "System.graphics"
 
-
-
 local cameraX = 0
 local cameraY = 840
 
 local width = love.graphics.getWidth()
 local zoom = width / 480
 local speed_cam = 1000
+
+
 
 local ind_classe = 1
 local compte_j = 0
@@ -72,9 +72,6 @@ function love.update(dt)
     if gameState == "play" then
         cameraY = Moove_cam(cameraY,speed_cam,dt)
     end
-
-    -- Appel de la fonction gérant le serveur
-    updateServer()
 end
 
 function love.load()
@@ -185,91 +182,15 @@ function love.keypressed(key, scancode, isrepeat)
     end
 end
 
------------------------- RESEAUX ------------------------
+------------------------ RESAEUX ------------------------
 
--- Importer les classes Assassin et Healer
-local Plateau = require("System.plateau")
-require "System.méthode"
-require "System.Deplacement"
-require "System.Gestion"
-require "System.draw"
-require "System.menu"
-require  "System.graphics"
-
--- Créer un socket UDP pour le serveur
+-- Créer un socket UDP pour se connecter au serveur
 local socket = require("socket")
-local server = socket.udp()
-server:setsockname("*", 12345)  -- Écoute sur toutes les adresses IP sur le port 12345
-server:settimeout(0)  -- Définir le timeout sur 0 pour une réception non bloquante
+local client = socket.udp()
+client:setpeername("127.0.0.1", 12345)  -- Se connecter au serveur sur localhost et le port 12345
 
-print("Serveur démarré, en attente de connexion...")
+-- Envoyer des données au serveur
+local data = "Données du joueur 1"
+client:send(data)
 
--- Attendre que le client se connecte
-local clientConnected = false
-local clientIP, clientPort
 
-while not clientConnected do
-    local data, ip, port = server:receivefrom()
-    if data then
-        clientIP = ip
-        clientPort = port
-        clientConnected = true
-        print("Client connecté :", clientIP, clientPort)
-        server:sendto("Connexion établie!", clientIP, clientPort)
-    end
-end
-
--- Maintenant que le client est connecté, le serveur peut envoyer des messages
--- Vous pouvez inclure ici le reste de votre logique de serveur
-
--- Créez la fonction updateServer pour gérer la logique du serveur
-function updateServer()
-    -- Ajoutez ici votre logique de mise à jour du serveur
-    -- Par exemple, envoyer des messages aux clients, etc.
-end
-
--- Boucle principale du serveur
-while true do
-    local data, clientIP, clientPort = server:receivefrom()
-    if data then
-        print("Message reçu du client :", data)
-        -- Répondre au client (vous pouvez inclure ici le traitement des données reçues)
-        server:sendto("Message reçu avec succès!", clientIP, clientPort)
-    end
-    -- Mettre un petit délai pour ne pas surcharger le CPU
-    socket.sleep(0.01)
-
-    -- Appel de la fonction de mise à jour du serveur
-    updateServer()
-end
-
-local maxPlayers = 2
-local waitingPlayers = 0
-local clients = {}  -- Tableau pour stocker les clients connectés avec leur adresse IP et leur port
-
--- Afficher l'interface de la salle d'attente
--- Fonction pour dessiner l'interface de la salle d'attente
-function drawWaitingScreen()
-    love.graphics.clear()  -- Effacer l'écran
-
-    -- Afficher le texte "En attente de joueurs..."
-    love.graphics.print("En attente de joueurs...", 100, 100)
-
-    -- Afficher le nombre de joueurs connectés et le nombre maximum de joueurs
-    love.graphics.print("Joueurs connectés : " .. waitingPlayers, 100, 150)
-    love.graphics.print("Nombre maximum de joueurs : " .. maxPlayers, 100, 200)
-
-    -- Dessiner le bouton pour lancer le jeu si le nombre de joueurs atteint maxPlayers
-    if waitingPlayers == maxPlayers then
-        love.graphics.rectangle("fill", 100, 250, 200, 50)  -- Rectangle du bouton
-        love.graphics.print("Lancer le jeu", 150, 260)  -- Texte du bouton
-    end
-end
-
--- Fonction pour détecter le clic sur le bouton de lancement du jeu
-function love.mousepressed(x, y, button, istouch, presses)
-    if waitingPlayers == maxPlayers and x >= 100 and x <= 300 and y >= 250 and y <= 300 then
-        -- Lancer le jeu lorsque le bouton est cliqué
-        startGame()
-    end
-end
