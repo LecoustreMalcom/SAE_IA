@@ -184,7 +184,11 @@ end
 
 -------------------------- RESEAUX --------------------------
 
+<<<<<<< Updated upstream
 -- Serveur
+=======
+-- Créer un socket UDP pour le serveur
+>>>>>>> Stashed changes
 local socket = require("socket")
 
 -- Créer un socket UDP
@@ -194,6 +198,42 @@ server:settimeout(0)  -- Définir le timeout sur 0 pour une réception non bloqu
 
 print("Serveur démarré, en attente de connexion...")
 
+<<<<<<< Updated upstream
+=======
+-- Attendre que le client se connecte
+local clientConnected = false
+local clientIP, clientPort
+
+while not clientConnected do
+    local data, ip, port = server:receivefrom()
+    if data then
+        clientIP = ip
+        clientPort = port
+        clientConnected = true
+        print("Client connecté :", clientIP, clientPort)
+        server:sendto("Connexion établie!", clientIP, clientPort)
+    end
+end
+
+-- Maintenant que le client est connecté, le serveur peut envoyer des messages
+-- Vous pouvez inclure ici le reste de votre logique de serveur
+
+-- Créez la fonction updateServer pour gérer la logique du serveur
+function updateServer()
+    local data, clientIP, clientPort = server:receivefrom()
+    if data then
+        if data == "PlayerConnected" then
+            waitingPlayers = waitingPlayers + 1
+        end
+        print("Message reçu du client :", data)
+        -- Répondre au client (vous pouvez inclure ici le traitement des données reçues)
+        server:sendto("Message reçu avec succès!", clientIP, clientPort)
+    end
+    -- Mettre un petit délai pour ne pas surcharger le CPU
+    socket.sleep(0.01)
+end
+
+>>>>>>> Stashed changes
 -- Boucle principale du serveur
 while true do
     local data, clientIP, clientPort = server:receivefrom()
@@ -205,4 +245,8 @@ while true do
     -- Mettre un petit délai pour ne pas surcharger le CPU
     socket.sleep(0.01)
 end
+<<<<<<< Updated upstream
 -- Fin du serveur
+=======
+
+>>>>>>> Stashed changes
