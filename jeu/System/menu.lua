@@ -31,6 +31,7 @@ function Menu_choose(key,gameState,ind_classe,playerClasses,compte_j,numPlayers,
             ind_classe = 1
         end
     end
+
     return gameState,ind_classe,playerClasses,compte_j,Class_choisi,class_possible
 end
 

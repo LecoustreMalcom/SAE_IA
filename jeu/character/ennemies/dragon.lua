@@ -52,6 +52,9 @@ function Dragon:afficher()
     love.graphics.draw(self.image, self.quad, self.x, self.y,_,6,6)
 end
 
+function Dragon:FullVie()
+    self:setHp(200)
+end
     
 -- Renvoie la classe Dragon avec ses méthodes et propriétés
 return Dragon

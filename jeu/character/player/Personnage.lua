@@ -150,6 +150,13 @@ function Personnage:setVitesse(Vitesse)
     self.vitesse = Vitesse
 end
 
+function Personnage:setAllStats(attack, defense, luck, vitesse)
+    self.attack = attack
+    self.defense = defense
+    self.luck = luck
+    self.vitesse = vitesse
+end
+
 function Personnage:setCooldown(cooldown)
     self.cooldown = cooldown
 end

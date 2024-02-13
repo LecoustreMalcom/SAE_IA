@@ -14,7 +14,7 @@ local width = love.graphics.getWidth()
 local zoom = width / 480
 local speed_cam = 1000
 
-
+local Slab = require 'Slab-master'
 
 local ind_classe = 1
 local compte_j = 0
@@ -57,13 +57,38 @@ local Satan
 
 local alance = false
 
+local stats = {{
+    Force = 0,
+    Speed = 0,
+    Luck = 0,
+    Defense = 0
+},
+{
+    Force = 0,
+    Speed = 0,
+    Luck = 0,
+    Defense = 0
+},
+{
+    Force = 0,
+    Speed = 0,
+    Luck = 0,
+    Defense = 0
+},
+{
+    Force = 0,
+    Speed = 0,
+    Luck = 0,
+    Defense = 0
+}}
+
 function love.update(dt)
     if gameState == "chargement" then
         LoadingTimer = LoadingTimer + dt
         if LoadingTimer >= LoadingTime then
             gameState = "play"
         end
-        J1,J2,J3,J4 = AddJoueur(plat,compte_j,gridSize,playerClasses,width)
+        J1,J2,J3,J4 = AddJoueur(plat,compte_j,gridSize,playerClasses,width,stats)
         Gob,Gob2,Phoenix,Dragon ,skel1,skel2,Satan,challenge = Add_mob(plat,width,gridSize)
         liste_j = Liste_j(J1,J2,J3,J4)
         liste_mob = Liste_mob(Gob,Gob2,Phoenix,Dragon,skel1,skel2,Satan,challenge)
@@ -72,9 +97,13 @@ function love.update(dt)
     if gameState == "play" then
         cameraY = Moove_cam(cameraY,speed_cam,dt)
     end
+
+    if gameState == "choose" then
+        Slab.Update(dt)
+    end
 end
 
-function love.load()
+function love.load(args)
     LoadingTime = 3 -- Temps de chargement en secondes
     LoadingTimer = 0
     -- Créer une instance de l'Assassin
@@ -84,6 +113,8 @@ function love.load()
     
     font = love.graphics.newFont(24)
     love.graphics.setFont(font)
+
+    Slab.Initialize(args)
 end
 
 function love.draw()
@@ -110,7 +141,7 @@ function love.draw()
         Affi_ecurie(width,liste_j[j_actuel])
 
     elseif gameState == "choose" then
-        Affi_choose(compte_j, class_possible, ind_classe, class_choisi,width)
+        Affi_choose(compte_j, class_possible, ind_classe, class_choisi,width,Slab,stats)
 
     elseif gameState == "chargement" then
         Affi_chargement(LoadingTimer, LoadingTime)

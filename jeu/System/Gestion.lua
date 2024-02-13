@@ -30,7 +30,19 @@ function AfficherInventaire(joueur)
     end
 end
 
-function AddJoueur(plat,compte_j,gridSize,playerClasses,width)
+function PrintTable(t)
+    for i, v in ipairs(t) do
+        if type(v) == "table" then
+            for j, k in ipairs(v) do
+                print("Tableau "..i..", Element "..j..": "..tostring(k))
+            end
+        else
+            print("Element "..i..": "..tostring(v))
+        end
+    end
+end
+
+function AddJoueur(plat,compte_j,gridSize,playerClasses,width,stats)
 
     local Place_p1_x = width - (width / 16) * 13
     local Place_p2_x = width - (width / 16) * 13
@@ -43,26 +55,25 @@ function AddJoueur(plat,compte_j,gridSize,playerClasses,width)
     local Place_p3_y = width - (width / 16) * 4
     local Place_p4_y = width - (width / 16) * 2
 
-
     if compte_j > 0 then
-        J1 = GetClasseJoueur(playerClasses[1])
+        J1 = GetClasseJoueur(playerClasses[1],stats,1)
         plat:ajouterObjet(math.floor(Place_p1_x / gridSize) + 1, math.floor(Place_p1_y / gridSize) + 1, J1)
         J1:setX(Place_p1_x)
         J1:setY(Place_p1_y)
         if compte_j > 1 then
-            J2 = GetClasseJoueur(playerClasses[2])
+            J2 = GetClasseJoueur(playerClasses[2],stats,2)
             plat:ajouterObjet(math.floor(Place_p2_x / gridSize) + 1, math.floor(Place_p2_y / gridSize) + 1, J2)
             J2:setX(Place_p2_x)
             J2:setY(Place_p2_y)
 
             if compte_j > 2 then
-                J3 = GetClasseJoueur(playerClasses[3])
+                J3 = GetClasseJoueur(playerClasses[3],stats,3)
                 plat:ajouterObjet(math.floor(Place_p3_x / gridSize) + 1, math.floor(Place_p3_y / gridSize) + 1, J3)
                 J3:setX(Place_p3_x)
                 J3:setY(Place_p3_y)
 
                 if compte_j > 3 then
-                    J4 = GetClasseJoueur(playerClasses[4])
+                    J4 = GetClasseJoueur(playerClasses[4],stats,4)
                     plat:ajouterObjet(math.floor(Place_p4_x / gridSize) + 1, math.floor(Place_p4_y / gridSize) + 1, J4)
                     J4:setX(Place_p4_x)
                     J4:setY(Place_p4_y)
@@ -203,4 +214,64 @@ function EndGame(joueur, monstre, Liste_j)
             love.event.quit()
         end
     end
+end
+
+function IncreaseStat(stats, statName, amount)
+    stats[statName] = stats[statName] + amount
+    return stats
+end
+
+function DecreaseStat(stats, statName, amount)
+    if stats[statName] and stats[statName] > 0 then
+        stats[statName] = stats[statName] - amount
+    end
+    return stats
+end
+
+function CountStats(stats)
+    local total = 0
+    for _, value in pairs(stats) do
+        total = total + value
+    end
+    return total
+end
+
+function ResetStats(stats)
+    for key, _ in pairs(stats) do
+        stats[key] = 0
+    end
+end
+
+function ShowCustom(Slab,base,compte_j)
+
+    local list = base[compte_j + 1]
+
+    local max = 20
+    local total = CountStats(list)
+
+    -- Get screen size
+    local screenWidth, screenHeight = love.graphics.getDimensions()
+
+    -- Calculate window position
+    local windowX = screenWidth / 4.5
+    local windowY = screenHeight * 3 / 4
+
+    if Slab.BeginWindow('AttributeWindow', {Title = 'Attribute Points', X = windowX, Y = windowY}) then
+        for stat, value in pairs(list) do
+            Slab.Text(stat .. ": " .. value)
+            if  total < 20 then
+                if Slab.Button("Increase " .. stat) then
+                    list = IncreaseStat(list, stat, 1)
+                end
+            end
+            if value ~= nil and tonumber(value) > 0 then
+                if Slab.Button("Decrease " .. stat) then
+                    list = DecreaseStat(list, stat, 1)
+                end
+            end
+        end
+        Slab.Text("Points restant : " .. max - total)
+    end
+    Slab.EndWindow()
+    Slab.Draw()
 end

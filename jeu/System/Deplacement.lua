@@ -101,7 +101,12 @@ function LancerCombat(plat,joueur,liste_mob)
             ennemie:FullVie()
             ennemie:setEtat(nil)
         else
-            plat:supEnnemie(ennemie)
+            if ennemie:getHp() == 0 then
+                plat:supEnnemie(ennemie)
+            else
+                ennemie:setEtat(nil)
+                ennemie:FullVie()
+            end
             for i, v in ipairs(liste_mob) do
                 if v == ennemie then
                     table.remove(liste_mob, i)
