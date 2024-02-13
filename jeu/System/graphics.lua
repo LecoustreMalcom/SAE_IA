@@ -11,12 +11,19 @@ end
 
 function Affi_choose(compte_j, class_possible, ind_classe, class_choisi,width,Slab,stats_j)
     local classInstance = GetClasseJoueur(class_possible[ind_classe])
+    local pos_x = width / 2 + 150
+    local pos_y = 175
+
     love.graphics.clear(0, 0, 0)
 
     love.graphics.setColor(255, 255, 255)
     love.graphics.draw(Background, 0, 0, 0, width / 1024, width / 1024)
     love.graphics.printf("Quelle classe souhaitez-vous, joueur " .. compte_j + 1 .. " ?", 0, 100, love.graphics.getWidth(), "center")
     love.graphics.printf("Classe : " .. class_possible[ind_classe], 0, 200, love.graphics.getWidth(), "center")
+
+    classInstance:setX(pos_x)
+    classInstance:setY(pos_y)
+    classInstance:afficher()
 
     local stats = classInstance:returnStats()
     love.graphics.printf("Stats de la classe : " .. table.concat(stats,","), 0, 300, love.graphics.getWidth(), "center")
