@@ -11,7 +11,12 @@ function Sword:new()
     instance:setPuissance(15)
     instance:setType("Arme")
     instance:setName("Sword")
+    instance.id = 1 --Id
     return instance
+end
+
+function Sword:getId()
+    return self.id
 end
 
 

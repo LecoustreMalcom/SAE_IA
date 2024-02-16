@@ -17,9 +17,17 @@ function Chimere:new()
     instance.x = 0 -- Position x de l'Chimere
     instance.y = 0 -- Position y de l'Chimere
     instance.name = "Chimere"
+    instance.id = 7 --Id
     return instance -- Renvoie l'instance nouvellement créée
 end
 
+function Chimere:getId()
+    return self.id
+end
+
+function Chimere:getName()
+    return self.name
+end
 
 function Chimere:drop()
     local ecu_possible = {10,12,14}

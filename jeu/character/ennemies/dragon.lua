@@ -17,7 +17,16 @@ function Dragon:new()
     instance.x = 0 -- Position x de l'Dragon
     instance.y = 0 -- Position y de l'Dragon
     instance.name = "Dragon"
+    instance.id = 6 -- Id
     return instance -- Renvoie l'instance nouvellement créée
+end
+
+function Dragon:getId()
+    return self.id
+end
+
+function Dragon:getName()
+    return self.name
 end
 
 function Dragon:drop()

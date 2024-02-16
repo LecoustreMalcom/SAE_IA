@@ -83,9 +83,27 @@ function Menu_shop(joueur,scale)
         if mouseX >= buttonX and mouseX <= buttonX + buttonWidth and mouseY >= buttonY and mouseY <= buttonY + buttonHeight then
             if joueur:getEcu() >= 10 then
                 joueur:removeEcu(10)
+                local swordInstance = Sword:new()
+
                 -- Ajouter l'objet à l'inventaire du joueur
-                joueur:setWeapon(Sword:new())
+                joueur:setWeapon(swordInstance)
+                local swordInstance = Sword:new()
+
                 love.window.showMessageBox("Achat", "Vous avez acheté une épée en fer" , {"OK"})
+
+                local updateObjet = string.format("UPDATE objet SET nb_acheter = nb_acheter + 1 WHERE id_objet = (%d)", swordInstance:getId())
+                print(swordInstance:getId())
+                print(updateObjet)
+        
+                local updateSuccess, updateErrorMessage = pcall(function()
+                    conn:exec(updateObjet)
+                end)
+        
+                if updateSuccess then 
+                    print("Mise à jour du nombre acheté de l'épée avec succès")
+                else
+                    print("Mise à jour du nombre acheté de l'épée a échoué" , updateErrorMessage)
+                end
             end
         end
 
@@ -93,9 +111,26 @@ function Menu_shop(joueur,scale)
         if mouseX >= buttonX and mouseX <= buttonX + buttonWidth and mouseY >= buttonY + 100 and mouseY <= buttonY + buttonHeight + 100 then
             if joueur:getEcu() >= 7 then
                 joueur:removeEcu(7)
+                local ArmorInstance = Armor:new()
+
                 -- Ajouter l'objet à l'inventaire du joueur
-                joueur:setArmure(Armor:new())
+                joueur:setArmure(ArmorInstance)
                 love.window.showMessageBox("Achat", "Vous avez acheté une armure en fer" , {"OK"})
+
+                local updateObjet = string.format("UPDATE objet SET nb_acheter = nb_acheter + 1 WHERE id_objet = (%d)", ArmorInstance:getId())
+                print(ArmorInstance:getId())
+                print(updateObjet)
+        
+                local updateSuccess, updateErrorMessage = pcall(function()
+                    conn:exec(updateObjet)
+                end)
+        
+                if updateSuccess then 
+                    print("Mise à jour du nombre acheté de l'armure avec succès")
+                else
+                    print("Mise à jour du nombre acheté de l'armure a échoué" , updateErrorMessage)
+                end
+
             end
         end
 
@@ -103,11 +138,29 @@ function Menu_shop(joueur,scale)
         if mouseX >= buttonX + 800  and mouseX <= buttonX + buttonWidth + 800 and mouseY >= buttonY  and mouseY <= buttonY + buttonHeight   then
             if joueur:getEcu() >= 5 then
                 joueur:removeEcu(5)
+                local PotionInstance = Potion:new()
+
                 -- Ajouter l'objet à l'inventaire du joueur
-                joueur:addInInventory(Potion:new())
+                joueur:addInInventory(PotionInstance)
                 love.window.showMessageBox("Achat", "Vous avez acheté une potion de soin" , {"OK"})
+
+                local updateObjet = string.format("UPDATE objet SET nb_acheter = nb_acheter + 1 WHERE id_objet = (%d)", PotionInstance:getId())
+                print(PotionInstance:getId())
+                print(updateObjet)
+        
+                local updateSuccess, updateErrorMessage = pcall(function()
+                    conn:exec(updateObjet)
+                end)
+        
+                if updateSuccess then 
+                    print("Mise à jour du nombre acheté de Potion avec succès")
+                else
+                    print("Mise à jour du nombre acheté de Potion a échoué" , updateErrorMessage)
+                end
+
             end
         end
+        
     end
 end
 

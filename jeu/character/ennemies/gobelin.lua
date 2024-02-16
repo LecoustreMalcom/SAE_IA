@@ -18,9 +18,18 @@ function Gobelin:new()
     instance.x = 0 -- Position x de l'Gobelin
     instance.y = 0 -- Position y de l'Gobelin
     instance.name = "Gobelin"
+    instance.id = 2 --Id
     return instance -- Renvoie l'instance nouvellement créée
 end
 
+function Gobelin:getId()
+    return self.id
+end
+
+
+function Gobelin:getName()
+    return self.name
+end
 
 function Gobelin:drop()
     local ecu_possible = {2,3,4}

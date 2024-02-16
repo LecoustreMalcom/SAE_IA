@@ -11,9 +11,13 @@ function Massue:new()
     instance:setPuissance(5)
     instance:setType("Arme")
     instance:setName("Massue")
+    instance.id = 6 --Id
     return instance
 end
 
+function Massue:getId()
+    return self.id
+end
 
 function Massue:getDescription()
     return "Massue , rajoute 5 de degats"

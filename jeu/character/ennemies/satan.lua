@@ -16,7 +16,12 @@ function Satan:new()
     instance.x = 0 -- Position x de l'Satan
     instance.y = 0 -- Position y de l'Satan
     instance.name = "Satan"
+    instance.id = 3 --Id
     return instance -- Renvoie l'instance nouvellement créée
+end
+
+function Satan:getId()
+    return self.id
 end
 
 function Satan:afficher()
@@ -28,6 +33,10 @@ function Satan:drop()
     local ecu = ecu_possible[math.random(1,3)]
     local liste_drop = {}
     return ecu,liste_drop
+end
+
+function Satan:getName()
+    return self.name
 end
 
     

@@ -1,3 +1,7 @@
+local conn = require "bdd.connexion_bdd"
+
+
+
 --Le joueur commence obligatoirement le combat en premier
 function Calcul_dmg_j(joueur,monstre)
     local dmg_joueur = joueur:getAttack()
@@ -45,19 +49,36 @@ function Calcul_dmg_m(monstre,joueur)
     return dmg_monstre
 end
 
-function WinOrLose(joueur,monstre)
+function WinOrLose(joueur, monstre)
     if monstre:getHp() == 0 then
         love.window.showMessageBox("Gain", "Vous avez tué le monstre ", {"OK"})
+        
+        -- Mettre à jour le nombre de morts dans la table monstre
+        local updateQuery = string.format("UPDATE monstre SET nb_morts = nb_morts + 1 WHERE id_monstre = (%d) ", monstre:getId())
+        print(monstre:getId())
+        -- Exécuter la requête SQL
+        local updateSuccess, updateErrorMessage = pcall(function()
+            conn:exec(updateQuery)
+        end)
+    
+        if updateSuccess then
+            print("Mise à jour du nombre de morts avec succès")
+        else
+            print("Mise à jour du nombre de morts a échoué:", updateErrorMessage)
+        end
+
         return true
 
     elseif joueur:getHp() == 0 then
-        love.window.showMessageBox("Mort", "Le monstre vous a tué,vous perdez donc votre joueur ", {"OK"})
+        love.window.showMessageBox("Mort", "Le monstre vous a tué, vous perdez donc votre joueur ", {"OK"})
         return false
 
     else 
         return nil
     end
 end
+
+
 
 function Drop(joueur,monstre)
     local ecu,liste_drop = monstre:drop()

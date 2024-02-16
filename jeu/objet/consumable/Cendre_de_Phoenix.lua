@@ -11,9 +11,13 @@ function Cendre:new()
     instance:setPuissance(40)
     instance:setType("Soin")
     instance:setName("Cendre de Phoenix")
+    instance.id = 8
     return instance
 end
 
+function Cendre:getId()
+    return self.id
+end 
 
 function Cendre:getDescription()
     return "Cendre de Phoenix , Permet de soigner de 40hp"

@@ -11,8 +11,13 @@ function ArmureFer:new()
     instance:setPuissance(15)
     instance:setType("Armure")
     instance:setName("Armure en Fer")
+    instance.id = 2 --Id
     return instance
 end
+
+function ArmureFer:getId()
+    return self.id
+end 
 
 
 function ArmureFer:getDescription()

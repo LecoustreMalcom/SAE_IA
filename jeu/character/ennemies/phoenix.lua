@@ -19,7 +19,16 @@ function Phoenix:new()
     instance.x = 0 -- Position x de l'Phoenix
     instance.y = 0 -- Position y de l'Phoenix
     instance.name = "Phoenix"
+    instance.id = 4 --Id
     return instance -- Renvoie l'instance nouvellement créée
+end
+
+function Phoenix:getId()
+    return self.id
+end
+
+function Phoenix:getName()
+    return self.name
 end
 
 

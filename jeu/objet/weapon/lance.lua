@@ -11,8 +11,14 @@ function Lance:new()
     instance:setPuissance(10)
     instance:setType("Arme")
     instance:setName("Lance")
+    instance.id = 7 --Id
     return instance
 end
+
+
+function Lance:getId()
+    return self.id
+end 
 
 
 function Lance:getDescription()

@@ -11,7 +11,12 @@ function ArmureCuir:new()
     instance:setPuissance(2)
     instance:setType("Armure")
     instance:setName("Armure en Cuir")
+    instance.id = 4 --Id
     return instance
+end
+
+function ArmureCuir:getId()
+    return self.id
 end
 
 

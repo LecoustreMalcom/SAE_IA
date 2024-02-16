@@ -11,9 +11,13 @@ function Potion:new()
     instance:setPuissance(20)
     instance:setType("Soin")
     instance:setName("Potion")
+    instance.id = 3 --Id 
     return instance
 end
 
+function Potion:getId()
+    return self.id
+end 
 
 function Potion:getDescription()
     return "Potion , Permet de soigner 20hp"

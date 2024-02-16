@@ -11,9 +11,13 @@ function ArmureMaille:new()
     instance:setPuissance(3)
     instance:setType("Armure")
     instance:setName("Armure en Maille")
+    instance.id = 5 --Id 
     return instance
 end
 
+function ArmureMaille:getId()
+    return self.id
+end 
 
 function ArmureMaille:getDescription()
     return "Armure en cuir , rajoute 3 points de defense "

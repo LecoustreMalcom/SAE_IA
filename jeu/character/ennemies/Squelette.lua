@@ -18,9 +18,13 @@ function Squelette:new()
     instance.x = 0 -- Position x de l'Squelette
     instance.y = 0 -- Position y de l'Squelette
     instance.name = "Squelette"
+    instance.id = 1 --Id
     return instance -- Renvoie l'instance nouvellement créée
 end
 
+function Squelette:getId()
+    return self.id
+end
 
 function Squelette:drop()
     local ecu_possible = {3,4,5}
@@ -52,6 +56,10 @@ end
 
 function Squelette:FullVie()
     self:setHp(30)
+end
+
+function Squelette:getName()
+    return self.name
 end
 
     

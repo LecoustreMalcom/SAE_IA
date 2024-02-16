@@ -17,9 +17,17 @@ function Centaure:new()
     instance.x = 0 -- Position x de l'Centaure
     instance.y = 0 -- Position y de l'Centaure
     instance.name = "Centaure"
+    instance.id = 8 --Id
     return instance -- Renvoie l'instance nouvellement créée
 end
 
+function Centaure:getId()
+    return self.id
+end
+
+function Centaure:getName()
+    return self.name
+end
 
 function Centaure:drop()
     local ecu_possible = {6,7,8}

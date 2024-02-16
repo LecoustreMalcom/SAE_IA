@@ -18,10 +18,18 @@ function Entite:new()
     self.x = 0 -- Position x du Entite
     self.y = 0 -- Position y du Entite
     self.etat = nil
-    self.name = ""
+    self.name = "Entite_malefique"
+    self.id = 5 -- Id
     return self -- Renvoie l'instance nouvellement créée
 end
 
+function Entite:getId()
+    return self.id
+end
+
+function Entite:getName()
+    return self.name
+end
 -- Méthodes pour obtenir les attributs du Entite
 function Entite:getHp()
     return self.Hp
