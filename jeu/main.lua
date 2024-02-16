@@ -14,11 +14,7 @@ local width = love.graphics.getWidth()
 local zoom = width / 480
 local speed_cam = 1000
 
-<<<<<<< Updated upstream
 local Slab = require 'Slab-master'
-=======
-
->>>>>>> Stashed changes
 
 local ind_classe = 1
 local compte_j = 0
@@ -101,13 +97,10 @@ function love.update(dt)
     if gameState == "play" then
         cameraY = Moove_cam(cameraY,speed_cam,dt)
     end
-<<<<<<< Updated upstream
 
     if gameState == "choose" then
         Slab.Update(dt)
     end
-=======
->>>>>>> Stashed changes
 end
 
 function love.load(args)

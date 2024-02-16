@@ -22,10 +22,6 @@ function Afficher_lancer(tableau)
     resultat = resultat .. "\n" -- Ajoute un retour à la ligne à la fin
     return resultat -- Renvoie la chaîne resultat
 end
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
 function table.indexOf(t, value)
     for i = 1, #t do
         if t[i] == value then

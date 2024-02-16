@@ -9,25 +9,7 @@ function Affi_start(numPlayers,width)
     love.graphics.printf("Appuyez sur 'Entrée' pour choisir votre classe", 0, 400, love.graphics.getWidth(), "center")
 end
 
-<<<<<<< Updated upstream
 function Affi_choose(compte_j, class_possible, ind_classe, class_choisi,width,Slab,stats_j)
-=======
-
-
-
--- function choix_joueur()
---     love.graphics.clear(0,0,0)
-
---     love.graphics.setColor(255, 255, 255)
---     love.graphics.draw(Background, 0, 0, 0, width / 1024, width / 1024)
---     love.graphics.printf("Joueur VS Joueur", 0, 100, love.graphics.getWidth(), "center")
---     love.graphics.printf("JOUEUR VS IA", 0, 200, love.graphics.getWidth(), "center")
--- end
-
-
-
-function Affi_choose(compte_j, class_possible, ind_classe, class_choisi,width)
->>>>>>> Stashed changes
     local classInstance = GetClasseJoueur(class_possible[ind_classe])
     local pos_x = width / 2 + 150
     local pos_y = 175

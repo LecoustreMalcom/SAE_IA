@@ -24,3 +24,14 @@ create table objet(
 );
 
 
+create table torture(
+    id_torture INT PRIMARY KEY,
+    nb_acheter INT
+);
+
+create table ecurie (
+    id_ecurie INT PRIMARY KEY,
+    nb_acheter INT
+);
+
+

@@ -43,3 +43,16 @@ insert into objet values (9,'graal', 0 );
 insert into objet values (10,'excalibur', 0);
 insert into objet values (11,'bouclier_lancelot', 0);
 
+
+
+
+-----------------------INSERTION TORTURE ---------------------------    
+
+insert into torture values (1 , 0);
+
+
+
+-----------------------INSERTION ECURIE ---------------------------
+
+insert into ecurie values (1 , 0   );
+

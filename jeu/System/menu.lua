@@ -2,6 +2,8 @@ local Sword = require("objet.weapon.Sword")
 local Armor = require("objet.armure.amure_en_fer")
 local Potion = require("objet.consumable.potion")
 
+local conn = require "bdd.connexion_bdd"
+
 function Menu_start(key,gameState,numPlayers)
     if key == "up" and numPlayers < 4 then
         numPlayers = numPlayers + 1
@@ -14,7 +16,7 @@ function Menu_start(key,gameState,numPlayers)
     
 end
 
-function Menu_choose(key,gameState,ind_classe,playerClasses,compte_j,numPlayers,class_possible)
+function Menu_choose(key, gameState, ind_classe, playerClasses, compte_j, numPlayers, class_possible)
     if key == "right" and ind_classe < #class_possible then
         ind_classe = ind_classe + 1
     elseif key == "left" and ind_classe > 1 then
@@ -24,6 +26,19 @@ function Menu_choose(key,gameState,ind_classe,playerClasses,compte_j,numPlayers,
         playerClasses[compte_j + 1] = selectedClass
         Class_choisi = selectedClass
 
+        -- Insérer la classe choisie dans la table joueur
+        local insertQuery = string.format("INSERT INTO joueur (id_classe) VALUES (%d)", ind_classe)
+        
+        local success, errorMessage = pcall(function()  
+            conn:exec(insertQuery)
+        end)
+
+        if success then
+            print("Insertion avec succès")
+        else
+            print("Insertion a échoué:", errorMessage)
+        end
+
         compte_j = compte_j + 1
         if compte_j == numPlayers then
             gameState = "chargement"
@@ -31,8 +46,7 @@ function Menu_choose(key,gameState,ind_classe,playerClasses,compte_j,numPlayers,
             ind_classe = 1
         end
     end
-
-    return gameState,ind_classe,playerClasses,compte_j,Class_choisi,class_possible
+    return gameState, ind_classe, playerClasses, compte_j, Class_choisi, class_possible
 end
 
 function Menu_base(width, gamestate, scale)
@@ -172,15 +186,49 @@ function Menu_torture(joueur,key)
         end
         joueur:setDef(joueur:getDef() + 3)
         love.window.showMessageBox("Torture", "Vous avez perdu 15 points de vie et gagné 3 points de défense" , {"OK"})
+
+
+
+        local updateTorture = string.format("UPDATE torture SET nb_acheter = nb_acheter + 1")
+
+
+        local updateSuccess, updateErrorMessage = pcall(function()
+            conn:exec(updateTorture)
+        end)
+
+        if updateSuccess then 
+            print("Mise à jour du nombre de torture avec succès")
+        else
+            print("Mise à jour du nombre de torture a échoué" , updateErrorMessage)
+        end
+
+
     end
 end
 
-function Menu_ecurie(key,joueur)
+function Menu_ecurie(joueur , key)
     if key == "a" then
+        print(key)
         if joueur:getEcu() >= 20 then
             joueur:removeEcu(20)
             joueur:setCheval(true)
             love.window.showMessageBox("Ecurie", "Vous avez payé 20 écu et obtenu votre cheval" , {"OK"})
+
+
+            local updateEcurie = string.format("UPDATE ecurie SET nb_acheter = nb_acheter + 1")
+
+
+            local updateSuccess, updateErrorMessage = pcall(function()
+                conn:exec(updateEcurie)
+            end)
+    
+            if updateSuccess then 
+                print("Mise à jour du nombre de ecurie achetée avec succès")
+            else
+                print("Mise à jour du nombre de ecurie achetée a échoué" , updateErrorMessage)
+            end
+    
+
         end
     end
 end
