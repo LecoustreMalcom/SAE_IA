@@ -153,5 +153,5 @@ end
 -- La fonction drawWaitingScreen dessine l'écran d'attente
 function drawWaitingScreen()
     love.graphics.setFont(font)
-    love.graphics.printf("Press SPACE to start the game", 0, love.graphics.getHeight() / 2, love.graphics.getWidth(), "center")
+    love.graphics.printf("En attente des autres joueurs ...", 0, love.graphics.getHeight() / 2, love.graphics.getWidth(), "center")
 end
