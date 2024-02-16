@@ -107,48 +107,39 @@ function love.draw()
     elseif gameState == "credits" then
         Affi_credits(width)
     elseif gameState == "start" then
-        Affi_start(numPlayers,width)
-    elseif gameState == "shop" then
-        Affi_shop(width,liste_j[j_actuel])
-    elseif gameState == "torture" then
-        Affi_torture(width,liste_j[j_actuel])
-    elseif gameState == "ecurie" then
-        Affi_ecurie(width,liste_j[j_actuel])
-    elseif gameState == "choose" then
-        Affi_choose(compte_j, class_possible, ind_classe, class_choisi,width)
+        menu(background,"Menu principal", "Jouer", "Règles", "Crédits", "Quitter", cameraX,cameraY,plat,font)
+    elseif gameState == "custom" then
+        Custom(background,liste_mob,liste_j,plat,font,width,gridSize,alancé)
     elseif gameState == "chargement" then
-        Affi_chargement(LoadingTimer, LoadingTime)
+        Chargement()
     elseif gameState == "play" then
-        Affi_play(cameraX,cameraY,gridSize,plat,resultat,compte_j,width,zoom,liste_j,j_actuel,liste_mob)
+        drawGame()
+    elseif gameState == "end" then
+        drawEndScreen()
     end
 end
 
--- Fonction pour dessiner l'interface de la salle d'attente
-function drawWaitingScreen()
-    love.graphics.clear(1, 0, 0)  -- Effacer l'écran avec un fond rouge
-
-    -- Afficher le texte "En attente de joueurs..."
-    love.graphics.print("En attente de joueurs...", 100, 100)
-
-    -- Afficher le nombre de joueurs connectés et le nombre maximum de joueurs
-    love.graphics.print("Joueurs connectés : " .. waitingPlayers, 100, 150)
-    love.graphics.print("Nombre maximum de joueurs : " .. maxPlayers, 100, 200)
-
-    -- Afficher le libellé "Waiting Screen" au-dessus du waiting screen
-    love.graphics.print("Waiting Screen", 100, 50)
+function love.keypressed(key)
+    if gameState == "play" then
+        if key == "escape" then
+            gameState = "end"
+        end
+    end
 end
 
--- Créez la fonction updateServer pour gérer la logique du serveur
 function updateServer()
     local data, clientIP, clientPort = server:receivefrom()
-    print(data)
     if data then
         if data == "PlayerConnected" then
             waitingPlayers = waitingPlayers + 1
             print("Joueur connecté :", clientIP, clientPort)
             -- Si le nombre de joueurs requis est atteint, passer au gameState "play"
             if waitingPlayers == maxPlayers then
-                gameState = "play"
+                -- Répondre à tous les clients que le jeu peut commencer
+                for i = 1, maxPlayers do
+                    local client = clients[i]
+                    server:sendto("GameStart", client.ip, client.port)
+                end
             end
         end
         print("Message reçu du client :", data)
@@ -159,26 +150,8 @@ function updateServer()
     socket.sleep(0.01)
 end
 
--- Boucle principale du serveur
-while true do
-    local data, clientIP, clientPort = server:receivefrom()
-    if data then
-        if data == "PlayerConnected" then
-            print(waitingPlayers)
-            waitingPlayers = waitingPlayers + 1
-            print("Joueur connecté :", clientIP, clientPort)
-            -- Si le nombre de joueurs requis est atteint, passer au gameState "play"
-            if waitingPlayers == maxPlayers then
-                gameState = "play"
-            end
-        end
-        print("Message reçu du client :", data)
-        -- Répondre au client (vous pouvez inclure ici le traitement des données reçues)
-        server:sendto("Message reçu avec succès!", clientIP, clientPort)
-    end
-    -- Mettre un petit délai pour ne pas surcharger le CPU
-    socket.sleep(0.01)
-
-    -- Appel de la fonction de mise à jour du serveur
-    updateServer()
+-- La fonction drawWaitingScreen dessine l'écran d'attente
+function drawWaitingScreen()
+    love.graphics.setFont(font)
+    love.graphics.printf("Press SPACE to start the game", 0, love.graphics.getHeight() / 2, love.graphics.getWidth(), "center")
 end
