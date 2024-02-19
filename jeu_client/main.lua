@@ -160,7 +160,7 @@ function love.mousepressed(x, y)
         Menu_shop(liste_j[j_actuel],2)        
     end
 end
-        
+
 
 function love.keypressed(key, scancode, isrepeat)
     if key == "escape" then

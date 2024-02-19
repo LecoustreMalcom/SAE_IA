@@ -125,7 +125,13 @@ function love.keypressed(key)
             gameState = "end"
         end
     end
+    if gameState == "chargement" then
+        if keu == 'space' then
+            gameState = "play"
+        end
+    end
 end
+
 
 function updateServer()
     local data, clientIP, clientPort = server:receivefrom()
