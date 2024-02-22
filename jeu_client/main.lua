@@ -20,6 +20,7 @@ client:send("PlayerConnected")
 -- Attendre la réponse du serveur
 local response, err = client:receive()
 
+
 if response then
     print("Réponse du serveur :", response)
 else
@@ -52,7 +53,7 @@ plat:ajouterCaseSpeciale()
 
 local numPlayers = 1
 local font
-local gameState = "base"
+local gameState = "waiting"  -- GameState pour le waiting screen
 local playerClasses = {}
 
 local J1 = nil
@@ -73,6 +74,7 @@ local challenge
 local Satan
 
 local alance = false
+
 
 function love.update(dt)
     if gameState == "chargement" then
@@ -104,7 +106,10 @@ function love.load()
 end
 
 function love.draw()
-    if gameState == "base" then
+    if gameState == "waiting" then
+        drawWaitingScreen()
+        
+    elseif gameState == "base" then
         Affi_Base(width)
 
     elseif gameState == "rules" then
@@ -197,4 +202,10 @@ function love.keypressed(key, scancode, isrepeat)
             alance = true
         end
     end
+end
+
+-- La fonction drawWaitingScreen dessine l'écran d'attente
+function drawWaitingScreen()
+    love.graphics.setFont(font)
+    love.graphics.printf("En attente des autres joueurs ...", 0, love.graphics.getHeight() / 2, love.graphics.getWidth(), "center")
 end

@@ -138,7 +138,10 @@ function updateServer()
     if data then
         if data == "PlayerConnected" then
             waitingPlayers = waitingPlayers + 1
+            print("waitingPlayers:", waitingPlayers)
             print("Joueur connecté :", clientIP, clientPort)
+            -- Ajouter le nouveau client à la table des clients
+            clients[waitingPlayers] = {ip = clientIP, port = clientPort}
             -- Si le nombre de joueurs requis est atteint, passer au gameState "play"
             if waitingPlayers == maxPlayers then
                 -- Répondre à tous les clients que le jeu peut commencer
@@ -159,5 +162,5 @@ end
 -- La fonction drawWaitingScreen dessine l'écran d'attente
 function drawWaitingScreen()
     love.graphics.setFont(font)
-    love.graphics.printf("En attente des autres joueurs ...", 0, love.graphics.getHeight() / 2, love.graphics.getWidth(), "center")
+    love.graphics.printf("Ici c'est le serveur", 0, love.graphics.getHeight() / 2, love.graphics.getWidth(), "center")
 end
