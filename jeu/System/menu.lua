@@ -15,7 +15,6 @@ function Menu_start(key,gameState,numPlayers)
     return gameState,numPlayers
     
 end
-
 function Menu_choose(key, gameState, ind_classe, playerClasses, compte_j, numPlayers, class_possible)
     if key == "right" and ind_classe < #class_possible then
         ind_classe = ind_classe + 1
@@ -26,28 +25,42 @@ function Menu_choose(key, gameState, ind_classe, playerClasses, compte_j, numPla
         playerClasses[compte_j + 1] = selectedClass
         Class_choisi = selectedClass
 
-        -- Insérer la classe choisie dans la table joueur
-        local insertQuery = string.format("INSERT INTO joueur (id_classe) VALUES (%d)", ind_classe)
-        
-        local success, errorMessage = pcall(function()  
-            conn:exec(insertQuery)
+        -- Insert into games and retrieve the last inserted game ID
+        local insertGame = "INSERT INTO games DEFAULT VALUES RETURNING id_games"
+        local success, lastGameId = pcall(function()
+            local result = conn:exec(insertGame)
+            return result:getvalue(0, 0)
         end)
 
         if success then
-            print("Insertion avec succès")
-        else
-            print("Insertion a échoué:", errorMessage)
-        end
+            print("Insertion dans games avec succès. Last Game ID:", lastGameId)
 
-        compte_j = compte_j + 1
-        if compte_j == numPlayers then
-            gameState = "chargement"
+            -- Insert into joueur using the lastGameId
+            local insertQuery = string.format("INSERT INTO joueur (id_classe, id_games) VALUES (%d, (SELECT MAX(id_games) FROM games))", ind_classe)
+            
+            local success, errorMessage = pcall(function()
+                conn:exec(insertQuery)
+            end)
+
+            if success then
+                print("Insertion dans joueur avec succès")
+            else
+                print("Insertion dans joueur a échoué:", errorMessage)
+            end
+
+            compte_j = compte_j + 1
+            if compte_j == numPlayers then
+                gameState = "chargement"
+            else
+                ind_classe = 1
+            end
         else
-            ind_classe = 1
+            print("Insertion dans games a échoué.")
         end
     end
     return gameState, ind_classe, playerClasses, compte_j, Class_choisi, class_possible
 end
+
 
 function Menu_base(width, gamestate, scale)
     local start_button = love.graphics.newImage("Assets/play.png")
@@ -105,7 +118,7 @@ function Menu_shop(joueur,scale)
 
                 love.window.showMessageBox("Achat", "Vous avez acheté une épée en fer" , {"OK"})
 
-                local updateObjet = string.format("UPDATE objet SET nb_acheter = nb_acheter + 1 WHERE id_objet = (%d)", swordInstance:getId())
+                local updateObjet = string.format("UPDATE objet SET nb_acheter = nb_acheter + 1 , id_games = (SELECT MAX(id_games) FROM games) WHERE id_objet = (%d)", swordInstance:getId())
                 print(swordInstance:getId())
                 print(updateObjet)
         
@@ -131,7 +144,7 @@ function Menu_shop(joueur,scale)
                 joueur:setArmure(ArmorInstance)
                 love.window.showMessageBox("Achat", "Vous avez acheté une armure en fer" , {"OK"})
 
-                local updateObjet = string.format("UPDATE objet SET nb_acheter = nb_acheter + 1 WHERE id_objet = (%d)", ArmorInstance:getId())
+                local updateObjet = string.format("UPDATE objet SET nb_acheter = nb_acheter + 1 , id_games = (SELECT MAX(id_games) FROM games) WHERE id_objet = (%d)", ArmorInstance:getId())
                 print(ArmorInstance:getId())
                 print(updateObjet)
         
@@ -158,7 +171,7 @@ function Menu_shop(joueur,scale)
                 joueur:addInInventory(PotionInstance)
                 love.window.showMessageBox("Achat", "Vous avez acheté une potion de soin" , {"OK"})
 
-                local updateObjet = string.format("UPDATE objet SET nb_acheter = nb_acheter + 1 WHERE id_objet = (%d)", PotionInstance:getId())
+                local updateObjet = string.format("UPDATE objet SET nb_acheter = nb_acheter + 1, id_games = (SELECT MAX(id_games) FROM games) WHERE id_objet = (%d)", PotionInstance:getId())
                 print(PotionInstance:getId())
                 print(updateObjet)
         
@@ -189,7 +202,7 @@ function Menu_torture(joueur,key)
 
 
 
-        local updateTorture = string.format("UPDATE torture SET nb_acheter = nb_acheter + 1")
+        local updateTorture = string.format("UPDATE torture SET nb_acheter = nb_acheter + 1 , id_games = (SELECT MAX(id_games) FROM games)")
 
 
         local updateSuccess, updateErrorMessage = pcall(function()
@@ -201,8 +214,6 @@ function Menu_torture(joueur,key)
         else
             print("Mise à jour du nombre de torture a échoué" , updateErrorMessage)
         end
-
-
     end
 end
 
@@ -215,7 +226,7 @@ function Menu_ecurie(joueur , key)
             love.window.showMessageBox("Ecurie", "Vous avez payé 20 écu et obtenu votre cheval" , {"OK"})
 
 
-            local updateEcurie = string.format("UPDATE ecurie SET nb_acheter = nb_acheter + 1")
+            local updateEcurie = string.format("UPDATE ecurie SET nb_acheter = nb_acheter + 1 , id_games = (SELECT MAX(id_games) FROM games)")
 
 
             local updateSuccess, updateErrorMessage = pcall(function()
@@ -227,8 +238,6 @@ function Menu_ecurie(joueur , key)
             else
                 print("Mise à jour du nombre de ecurie achetée a échoué" , updateErrorMessage)
             end
-    
-
         end
     end
 end

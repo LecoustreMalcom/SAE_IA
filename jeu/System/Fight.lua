@@ -54,7 +54,7 @@ function WinOrLose(joueur, monstre)
         love.window.showMessageBox("Gain", "Vous avez tué le monstre ", {"OK"})
         
         -- Mettre à jour le nombre de morts dans la table monstre
-        local updateQuery = string.format("UPDATE monstre SET nb_morts = nb_morts + 1 WHERE id_monstre = (%d) ", monstre:getId())
+        local updateQuery = string.format("UPDATE monstre SET nb_morts = nb_morts + 1, id_games = (SELECT MAX(id_games) FROM games) WHERE id_monstre = %d", monstre:getId())
         print(monstre:getId())
         -- Exécuter la requête SQL
         local updateSuccess, updateErrorMessage = pcall(function()
